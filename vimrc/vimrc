@@ -1,0 +1,255 @@
+" =========================================================================
+"                   VimRC -- Vimrc for Richard and Coco
+" =========================================================================
+"    Copyright (C) 2013-2015 Richard Wei (xinranmsn@gmail.com)
+"
+"    This program is free software: you can redistribute it and/or modify
+"    it under the terms of the GNU General Public License as published by
+"    the Free Software Foundation, either version 3 of the License, or
+"    (at your option) any later version.
+"
+"    This program is distributed in the hope that it will be useful,
+"    but WITHOUT ANY WARRANTY; without even the implied warranty of
+"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+"    GNU General Public License for more details.
+"
+"    You should have received a copy of the GNU General Public License
+"    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+" =========================================================================
+"
+" Requirements:
+" 	OS X / Linux
+" 	VIM 7.4+
+" 	clang, libclang, python2.6+, python-libs, gcc-c++, boost-python, cmake
+"
+" Installation:
+" 	Nothing needs to be particularly installed if you've put ~/.vim and 
+" 	~/.vimrc in place. But please recompile YouCompleteMe using following
+" 	command:
+" 		$ cd ~/.vim/bundle/YouCompleteMe
+" 		$ ./install.sh --clang-completer --system-libclang --system-boost
+" 	Note that any unresolved dependencies could cause errors. For more
+" 	information: http://valloric.github.io/YouCompleteMe/
+"
+" Default Font:
+" 	Monaco
+"	(Need different font for GVim or MacVim? Create your ~/.gvimrc)
+"
+"
+" Here We Go:
+"
+"------------------------ GENERAL -----------------------------
+set nocompatible
+
+if has("macunix")
+	" patched powerline font
+	set guifont=Monaco\ for\ Powerline:h12
+elseif has("linux")
+	set guifont=Monaco\ 12
+else
+	set guifont=Monaco:h12
+endif
+
+set nu
+set ai
+set smartindent
+set tabstop=4
+set shiftwidth=4
+set showmatch
+set ruler
+set autoindent
+set incsearch
+set noshowmode
+set syntax=automatic
+set mouse=a
+syntax on
+syntax enable
+if has("macunix")
+	colorscheme desertEx
+else
+	colorscheme desert
+endif
+"--------------------------------------------------------------
+
+"---------------------- KEY MAPPINGS --------------------------
+" Toggle NERDTree
+nnoremap <silent> <F5> :NERDTreeToggle<CR>
+" Toggle Tagbar
+nnoremap <silent> <F4> :TagbarToggle<CR>
+" Find current file in NERDTree
+nnoremap <leader>n :NERDTreeFind<CR>
+" Build Eclim Java project
+nnoremap <silent> <leader>jb :ProjectBuild<CR>
+" Show Eclim project problems
+nnoremap <silent> <leader>jp :ProjectProblems<CR>
+" Run Eclim Java project
+nnoremap <silent> <leader>jr :Java<CR>
+" Import the java class under cursor
+nnoremap <silent> <leader>ji :JavaImport<CR>
+" Search for the javadocs of the element under cursor
+nnoremap <silent> <leader>jd :JavaDocSearch<CR>
+" Search context-sensitively for the element under cursor
+nnoremap <silent> <leader>js :JavaSearchContext<CR>
+" Clear search
+nnoremap <silent> cs :noh<CR>
+" Window switching
+nnoremap <silent> <C-j> <C-w>j
+nnoremap <silent> <C-k> <C-w>k
+nnoremap <silent> <C-h> <C-w>h
+nnoremap <silent> <C-l> <C-w>l
+" Close buffer
+nnoremap <leader>bd :Bclose<CR>
+" Select a buffer to close
+nnoremap <leader>db :call CloseBuffer()<CR>
+" Close all buffers but the current one
+nnoremap <leader>bo :BOnly<CR>
+" Select a tab to close
+nnoremap <leader>dt :call CloseTab()<CR>
+" Close current tab
+nnoremap <leader>ct :tabc<CR>
+" Jump to buffer
+nnoremap gb :ls<CR>:b<SPACE>
+" Save default session
+nnoremap <leader>ss :SaveSession<CR>
+" Reload
+nnoremap <silent> <F3> :so ~/.vimrc<CR> :AirlineRefresh<CR>
+" Insert by deleting current word
+nnoremap <silent> cx viwc
+" Delete current word
+nnoremap <silent> dx viwd
+" Yank current word
+nnoremap <silent> yx viwy
+" Insert by deleting current contents in brackets
+nnoremap <silent> cz vibc
+" Delete current contents in brackets
+nnoremap <silent> dz vibd
+" Yank current contents in brackets
+nnoremap <silent> yz viby
+" Insert by deleting current contents in {}
+nnoremap <silent> c; viBdO
+" Delete current contents in {}
+nnoremap <silent> d; viBd
+" Yank current contents in {}
+nnoremap <silent> y; viBy
+" Delete {} (eg. remove {} from a single statement for loop)
+nnoremap <silent> dr [{xx]}dd
+" cd to current file path
+nnoremap <silent> <leader>cd :lcd %:p:h<CR>
+" Save and make
+nnoremap <silent> <leader>m :w<CR>:mak<CR>
+" Remove trailing whitespaces
+nnoremap <silent> <F6> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+" Mark window for swapping
+nnoremap <silent> <leader>mw :call MarkWindowSwap()<CR>
+" Swap current window with marked window
+nnoremap <silent> <leader>pw :call DoWindowSwap()<CR>
+"---------------------------------------------------------------
+
+"------------------------- FUNCTIONS ---------------------------
+" Mark window for swapping
+function! MarkWindowSwap()
+    let g:markedWinNum = winnr()
+endfunction
+
+" Swap current window with marked window
+function! DoWindowSwap()
+    "Mark destination
+    let curNum = winnr()
+    let curBuf = bufnr( "%" )
+    exe g:markedWinNum . "wincmd w"
+    "Switch to source and shuffle dest->source
+    let markedBuf = bufnr( "%" )
+    "Hide and open so that we aren't prompted and keep history
+    exe 'hide buf' curBuf
+    "Switch to dest and shuffle source->dest
+    exe curNum . "wincmd w"
+    "Hide and open so that we aren't prompted and keep history
+    exe 'hide buf' markedBuf 
+endfunction
+
+" Select a buffer to delete
+function! CloseBuffer()
+	ls
+	let bufNum = input("Close: ")
+	if !empty(bufNum)
+		exe 'Bclose' bufNum
+	endif
+endfunction
+
+" Select a tab to delete
+function! CloseTab()
+	tabs
+	let tabNum = input("Close: ")
+	if !empty(tabNum)
+		exe 'tabc' tabNum
+	endif
+endfunction	
+	
+"----------------------------------------------------------------
+
+"--------------------------- VUNDLE -----------------------------
+filetype off                   " required!
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle
+" required! 
+Plugin 'gmarik/Vundle.vim'
+
+" My Plugins here:
+"
+" original repos on github
+Plugin 'tpope/vim-fugitive'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plugin 'tpope/vim-rails.git'
+Plugin 'scrooloose/nerdtree'
+Plugin 'Valloric/YouCompleteMe'
+if has("macunix")
+	Plugin 'eraserhd/vim-ios'
+endif
+Plugin 'bling/vim-airline'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'fatih/vim-go'
+Plugin 'majutsushi/tagbar'
+Plugin 'xolox/vim-session'
+Plugin 'xolox/vim-misc'
+Plugin 'kovisoft/slimv'
+" vim-scripts repos
+Plugin 'L9'
+Plugin 'FuzzyFinder'
+Plugin 'cocoa.vim'
+" non github repos
+Plugin 'git://git.wincent.com/command-t.git'
+
+call vundle#end()
+
+filetype plugin indent on     " required! 
+
+" autocmd vimenter * NERDTree
+
+fixdel
+"----------------------------------------------------------------
+
+set hlsearch
+
+augroup filetypedetect 
+	au! BufNewFile,BufRead *.plist setf plist 
+augroup END
+
+"----------------------- YouCompleteMe --------------------------
+let g:ycm_auto_trigger = 1
+let g:EclimCompletionMethod = 'omnifunc'
+"----------------------------------------------------------------
+
+"------------------------- Vim-Airline --------------------------
+let g:airline#extensions#tabline#enabled = 1
+if has("macunix")
+	let g:airline_powerline_fonts = 1
+endif
+set laststatus=2 " show airline at all time
+if !exists('g:airline_symbols')
+	let g:airline_symbols = {}
+endif
+"----------------------------------------------------------------
