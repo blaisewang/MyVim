@@ -41,11 +41,11 @@
 "------------------------ GENERAL -----------------------------
 set nocompatible
 
-if has("macunix")
+if has("macunix") || has("mac")
 	" patched powerline font
 	set guifont=Monaco\ for\ Powerline:h12
-elseif has("linux")
-	set guifont=Monaco\ 12
+elseif has("unix")
+	set guifont=Monaco\ 10
 else
 	set guifont=Monaco:h12
 endif
@@ -64,7 +64,7 @@ set syntax=automatic
 set mouse=a
 syntax on
 syntax enable
-if has("macunix")
+if has("macunix") || has("mac")
 	colorscheme desertEx
 else
 	colorscheme desert
@@ -245,7 +245,7 @@ let g:EclimCompletionMethod = 'omnifunc'
 
 "------------------------- Vim-Airline --------------------------
 let g:airline#extensions#tabline#enabled = 1
-if has("macunix")
+if has("macunix") || has("mac")
 	let g:airline_powerline_fonts = 1
 endif
 set laststatus=2 " show airline at all time
