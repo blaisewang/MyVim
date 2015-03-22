@@ -1,5 +1,5 @@
 " =========================================================================
-"                   VimRC -- Vimrc for Richard and Coco
+"                                 vimrc
 " =========================================================================
 "    Copyright (C) 2013-2015 Richard Wei (xinranmsn@gmail.com)
 "
@@ -134,7 +134,7 @@ nnoremap <silent> y; viBy
 " Delete {} (eg. remove {} from a single statement for loop)
 nnoremap <silent> dr [{xx]}dd
 " cd to current file path
-nnoremap <silent> <leader>cd :lcd %:p:h<CR>
+nnoremap <silent> <leader>cd :cd %:p:h<CR>
 " Save and make
 nnoremap <silent> <leader>m :w<CR>:mak<CR>
 " Remove trailing whitespaces
@@ -205,10 +205,8 @@ Plugin 'Lokaltog/vim-easymotion'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'tpope/vim-rails.git'
 Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/syntastic'
 Plugin 'Valloric/YouCompleteMe'
-if has("macunix")
-	Plugin 'eraserhd/vim-ios'
-endif
 Plugin 'bling/vim-airline'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'fatih/vim-go'
@@ -216,12 +214,13 @@ Plugin 'majutsushi/tagbar'
 Plugin 'xolox/vim-session'
 Plugin 'xolox/vim-misc'
 Plugin 'kovisoft/slimv'
+Plugin 'danro/rename.vim'
+Plugin 'eparreno/vim-l9'
+Plugin 'wincent/command-t'
 " vim-scripts repos
-Plugin 'L9'
-Plugin 'FuzzyFinder'
-Plugin 'cocoa.vim'
+"
 " non github repos
-Plugin 'git://git.wincent.com/command-t.git'
+"
 
 call vundle#end()
 
