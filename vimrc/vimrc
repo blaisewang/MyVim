@@ -43,11 +43,11 @@ set nocompatible
 
 if has("macunix") || has("mac")
 	" patched powerline font
-	set guifont=Monaco\ for\ Powerline:h12
+	set guifont=Menlo\ for\ Powerline:h12
 elseif has("unix")
-	set guifont=Monaco\ 10
+	set guifont=Menlo\ 10
 else
-	set guifont=Monaco:h12
+	set guifont=Menlo:h12
 endif
 
 set nu
@@ -109,8 +109,6 @@ nnoremap <leader>dt :call CloseTab()<CR>
 nnoremap <leader>ct :tabc<CR>
 " Jump to buffer
 nnoremap gb :ls<CR>:b<SPACE>
-" Save default session
-nnoremap <leader>ss :SaveSession<CR>
 " Reload
 nnoremap <silent> <F3> :so ~/.vimrc<CR> :AirlineRefresh<CR>
 " Insert by deleting current word
@@ -133,6 +131,8 @@ nnoremap <silent> d; viBd
 nnoremap <silent> y; viBy
 " Delete {} (eg. remove {} from a single statement for loop)
 nnoremap <silent> dr [{xx]}dd
+" Replace the word under cursor
+nnoremap <silent> <leader>s :%s/\<<C-r><C-w>\>/
 " cd to current file path
 nnoremap <silent> <leader>cd :cd %:p:h<CR>
 " Save and make
@@ -290,4 +290,17 @@ let g:startify_list_order = [
 let g:startify_bookmarks = [ '~/.vimrc', '~/.gvimrc' ]
 let g:startify_file_number = 10
 let g:startify_session_dir = '~/.vim/session'
+let g:startify_skiplist = [
+			\ 'COMMIT_EDITMSG',
+			\ $VIMRUNTIME .'/doc',
+			\ 'bundle/.*/doc',
+			\ '\.DS_Store'
+			\ ]
+
+let g:startify_enable_special         = 0
+let g:startify_relative_path          = 1
+let g:startify_change_to_dir          = 1
+let g:startify_session_autoload       = 1
+let g:startify_session_persistence    = 1
+let g:startify_session_delete_buffers = 1
 "----------------------------------------------------------------
