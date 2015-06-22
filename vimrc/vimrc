@@ -132,7 +132,11 @@ nnoremap <silent> y; viBy
 " Delete {} (eg. remove {} from a single statement for loop)
 nnoremap <silent> dr [{xx]}dd
 " Replace the word under cursor
-nnoremap <silent> <leader>s :%s/\<<C-r><C-w>\>/
+nnoremap <leader>r :%s/\<<C-r><C-w>\>/
+" Search files for the word under cursor with 
+nnoremap <leader>s :lvim /\<<C-r><C-w>\>/gj 
+" Open list window
+nnoremap <leader>l :lw<CR>
 " cd to current file path
 nnoremap <silent> <leader>cd :cd %:p:h<CR>
 " Save and make
@@ -220,6 +224,7 @@ Plugin 'danro/rename.vim'
 Plugin 'eparreno/vim-l9'
 Plugin 'wincent/command-t'
 Plugin 'mhinz/vim-startify'
+Plugin 'rust-lang/rust.vim'
 " vim-scripts repos
 "
 " non github repos
