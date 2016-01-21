@@ -27,7 +27,7 @@
 " 	~/.vimrc in place. But please recompile YouCompleteMe using following
 " 	command:
 " 		$ cd ~/.vim/bundle/YouCompleteMe
-" 		$ ./install.sh --clang-completer --system-libclang --system-boost
+" 		$ ./install.py --clang-completer --system-libclang --system-boost
 " 	Note that any unresolved dependencies could cause errors. For more
 " 	information: http://valloric.github.io/YouCompleteMe/
 "
@@ -225,6 +225,7 @@ Plugin 'eparreno/vim-l9'
 Plugin 'wincent/command-t'
 Plugin 'mhinz/vim-startify'
 Plugin 'rust-lang/rust.vim'
+Plugin 'haskell/haskell-mode'
 " vim-scripts repos
 "
 " non github repos
