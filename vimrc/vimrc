@@ -43,7 +43,7 @@ set nocompatible
 
 if has("macunix") || has("mac")
 	" patched powerline font
-	set guifont=Menlo\ for\ Powerline:h12
+	set guifont=Menlo\ for\ Powerline:h14
 elseif has("unix")
 	set guifont=Menlo\ 10
 else
@@ -65,13 +65,15 @@ set mouse=a
 syntax on
 syntax enable
 if has("macunix") || has("mac")
-	colorscheme desertEx
+	colorscheme spacegray
 else
 	colorscheme desert
 endif
 "--------------------------------------------------------------
 
 "---------------------- KEY MAPPINGS --------------------------
+" Toggle CodeFormat
+nnoremap <silent> <S-F> <Esc> :call CodeFormat()<CR>
 " Toggle NERDTree
 nnoremap <silent> <F5> :NERDTreeToggle<CR>
 " Toggle Tagbar
@@ -152,7 +154,19 @@ nnoremap <silent> <F2> :Startify<CR>
 "---------------------------------------------------------------
 
 "------------------------- FUNCTIONS ---------------------------
-" Mark window for swapping
+" AStyle code formatter
+function! CodeFormat()
+  let lineNum = line(".")
+  if &filetype == ‘c’ || &filetype == ‘cpp’
+	  exec "%! astyle -A1LNSfpjk3\<CR>"
+  elseif &filetype == 'java'
+    exec "%! astyle -A2LNSfpjk3\<CR>"
+  else 
+    echo "Unsupported ".&filetype." file type"
+  endif
+  exec lineNum
+endfunction
+" Mark window for swappig
 function! MarkWindowSwap()
     let g:markedWinNum = winnr()
 endfunction
@@ -235,7 +249,9 @@ call vundle#end()
 
 filetype plugin indent on     " required! 
 
-" autocmd vimenter * NERDTree
+autocmd BufReadPost * NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx call tagbar#autoopen()
 
 fixdel
 "----------------------------------------------------------------
